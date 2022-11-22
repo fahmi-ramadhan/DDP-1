@@ -199,5 +199,7 @@ try:
                 pass
         print("\n---")
 
+except KeyboardInterrupt:
+    print("\nProgram Selesai")
 except: # Jika menu.txt tidak sesuai format
     print("Daftar menu tidak valid, cek kembali menu.txt!")
