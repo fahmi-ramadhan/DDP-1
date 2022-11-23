@@ -152,6 +152,7 @@ def selesai_menggunakan_meja():
 
 try:
     with open("menu.txt") as file_menu:
+        assert len(file_menu.readlines()) != 0  # Memastikan menu.txt ada isinya
         menu = {}  # Membuat dictionary untuk menu berdasarkan jenisnya
         for baris in file_menu:
             if "===" in baris[:3]:
