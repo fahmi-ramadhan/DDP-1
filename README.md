@@ -1,2 +1,2 @@
 # tugas-pemrograman
-Programming assignments for Programming Basics Class.
+Programming assignments during the Programming Basics course at the University of Indonesia.
