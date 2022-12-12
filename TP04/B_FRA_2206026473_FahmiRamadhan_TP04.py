@@ -71,7 +71,7 @@ class BuatPesanan(tk.Toplevel):
         self.lbl_nama = tk.Label(self.frame_buat_pesanan, text="Siapa Nama Anda?")
         self.ent_nama = tk.Entry(self.frame_buat_pesanan)
         self.btn_kembali = tk.Button(self.frame_buat_pesanan, text="Kembali", width=20, bg="#4472C4", fg="white",
-                                    # Kembali ke main window ketika diklik
+                                    # Kembali ke main window
                                     command=lambda:[self.destroy(), self.master.state(newstate="normal")])
         self.btn_lanjut = tk.Button(self.frame_buat_pesanan, text="Lanjut", width=20, bg="#4472C4", fg="white",
                                     command=self.cek_ketersediaan_meja)
@@ -84,8 +84,8 @@ class BuatPesanan(tk.Toplevel):
     
     def cek_ketersediaan_meja(self):
         if len(dict_meja) == 10:
-            tkmsg.showwarning("Meja Penuh!", "Mohon maaf, meja sedang penuh. \
-                Silakan datang kembali di lain kesempatan.")
+            tkmsg.showwarning("Meja Penuh!",
+                "Mohon maaf, meja sedang penuh. \nSilakan datang kembali di lain kesempatan.")
             self.destroy()  # Menutup window buat pesanan
             self.master.state(newstate="normal")  # Unminimize main window
         else:
@@ -108,14 +108,15 @@ class BuatPesanan(tk.Toplevel):
                     lanjut = False
                     break
             if lanjut:
-                self.state(newstate="iconic")  # Menutup window buat pesanan
+                self.state(newstate="iconic")  # Minimize window buat pesanan
                 self.pilih_pesanan()  # Membuka window pilih pesanan
             else:
-                tkmsg.showwarning("Nama Harus Unik!", f"Sudah ada pembeli dengan nama {self.nama}. \
-                    Masukkan nama yang berbeda.")
+                tkmsg.showwarning("Nama Harus Unik!", 
+                    f"Sudah ada pembeli dengan nama {self.nama}. \nMasukkan nama yang berbeda.")
 
     def pilih_pesanan(self):
         self.window_pilih_pesanan = tk.Toplevel(self)
+        self.window_pilih_pesanan.minsize(720, 420)
 
         # Container untuk widget nama, nomor meja, dan tombol ubah meja
         self.top_frame = tk.Frame(self.window_pilih_pesanan)
@@ -126,7 +127,7 @@ class BuatPesanan(tk.Toplevel):
         self.lbl_nmr_meja = tk.Label(self.top_frame, text=f"No Meja: {self.nmr}")
         self.btn_ubah_nmr_meja = tk.Button(self.top_frame, text="Ubah", bg="#4472C4", fg="white",
                                             # Membuka window ubah nomor meja dan
-                                            # minimize window pilih pesanan ketika diklik
+                                            # minimize window pilih pesanan
                                             command=lambda:[self.ubah_nomor_meja(), 
                                             self.window_pilih_pesanan.state(newstate="iconic")])
 
@@ -165,7 +166,7 @@ class BuatPesanan(tk.Toplevel):
                 header_jumlah["state"] = "readonly"
                 # Membuat combobox untuk opsi jumlah
                 values = tuple([k for k in range(10)])
-                self.opsi_jumlah = ttk.Combobox(self.top_frame, values = values)
+                self.opsi_jumlah = ttk.Combobox(self.top_frame, values = values, state="readonly")
                 self.opsi_jumlah.set(0)
                 self.opsi_jumlah.grid(row = i + self.row_lbl_jenis + 2, column = 4)
                 self.opsi_jumlah.bind("<<ComboboxSelected>>", self.hitung_harga)
@@ -181,7 +182,7 @@ class BuatPesanan(tk.Toplevel):
         self.bottom_frame = tk.Frame(self.window_pilih_pesanan)
         self.bottom_frame.pack(pady=(60,15))
         tk.Button(self.bottom_frame, text="Kembali", width=20, 
-                # Menutup window pilih pesanan dan membuka window buat pesanan ketika diklik
+                # Menutup window pilih pesanan dan membuka window buat pesanan
                 command=lambda:[self.window_pilih_pesanan.destroy(),self.state(newstate="normal")],
                 bg="#4472C4", fg="white").grid(row=0, column=0, padx=5)
         tk.Button(self.bottom_frame, text="OK", width=20, command=self.confirm_pesanan,
@@ -197,6 +198,7 @@ class BuatPesanan(tk.Toplevel):
 
     def ubah_nomor_meja(self):
         self.window_ubah_nomor_meja = tk.Toplevel(self.window_pilih_pesanan)
+        self.window_ubah_nomor_meja.minsize(370, 400)
 
         self.nmr_temp = self.nmr  # Nomor meja sementara untuk diubah ubah
 
@@ -214,7 +216,7 @@ class BuatPesanan(tk.Toplevel):
         self.navigation_frame = tk.Frame(self.window_ubah_nomor_meja)
         self.navigation_frame.pack(pady=(20,30))
         tk.Button(self.navigation_frame, text="Kembali", width=20, bg="#4472C4", fg="white",
-                # Menutup window ubah nomor meja dan membuka window pilih pesanan ketika diklik
+                # Menutup window ubah nomor meja dan membuka window pilih pesanan
                 command=lambda:[self.window_ubah_nomor_meja.destroy(), 
                 self.window_pilih_pesanan.state(newstate="normal")]).grid(row=0, column=0, padx=(10,5))
         tk.Button(self.navigation_frame, text="OK", width=20, 
@@ -288,7 +290,7 @@ class SelesaiGunakanMeja(tk.Toplevel):
         tk.Label(self, text="Abu-abu: Kosong").pack()
 
         tk.Button(self, text="Kembali", width=20,
-                # Menutup window selesai menggunakan meja dan membuka main window ketika diklik
+                # Menutup window selesai menggunakan meja dan membuka main window
                 command=lambda:[self.destroy(),self.master.state(newstate="normal")],
                 bg="#4472C4", fg="white").pack(pady=(20,30))
     
@@ -305,7 +307,7 @@ class SelesaiGunakanMeja(tk.Toplevel):
             for row in range(5):
                 if i in dict_meja:
                     meja = tk.Button(self.frame_meja, text=f"{i}", width=10, bg="red", fg="white",
-                                    # Membuka window ringkasan dan minimize window selesai gunakan meja ketika diklik
+                                    # Membuka window ringkasan dan minimize window selesai gunakan meja
                                     command=lambda i=i: [self.popup_ringkasan(i), self.state(newstate="iconic")])
                 else:
                     meja = tk.Button(self.frame_meja, text=f"{i}", width=10, bg="#a6a6a6", fg="white")
@@ -315,6 +317,7 @@ class SelesaiGunakanMeja(tk.Toplevel):
             
     def popup_ringkasan(self, nmr_meja):
         self.window_ringkasan = tk.Toplevel(self)
+        self.window_ringkasan.minsize(720, 420)
 
         self.nmr_meja = nmr_meja
         self.nama = dict_meja[self.nmr_meja]["nama"]
@@ -385,7 +388,7 @@ class SelesaiGunakanMeja(tk.Toplevel):
         self.bottom_frame = tk.Frame(self.window_ringkasan)
         self.bottom_frame.pack(pady=(60,15))
         tk.Button(self.bottom_frame, text="Kembali", width=20,
-                # Menutup window ringkasan dan membuka window selesai menggunakan meja ketika diklik
+                # Menutup window ringkasan dan membuka window selesai menggunakan meja
                 command=lambda:[self.window_ringkasan.destroy(),self.state(newstate="normal")],
                 bg="#4472C4", fg="white").grid(row=0, column=0, padx=5)
         tk.Button(self.bottom_frame, text="Selesai Gunakan Meja", width=20, command=self.confirm_selesai,
